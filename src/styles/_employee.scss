@@ -1,0 +1,19 @@
+.Employee{
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    
+    td{
+        input{
+            border: none;
+            color: #704b4b;
+            margin-left: 10px;
+        }
+    }
+
+    .edit-delete-icons{
+        .icons{
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+        }
+    }
+}
