@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 
-function Employee({ name, role, email, id, setEmployees, setDeleteArr, allActive }) {
+function Employee({ name, role, email, id, setEmployees, employees, setDeleteArr, activeAll, setActiveAll, deleteArr}) {
 
   const [disabled, setDisabled] = useState("disabled");
-  const [active, setActive] = useState(allActive);
-  
+  const [active, setActive] = useState(false);
   const [value, setValue] = useState({
     name: name,
     email: email,
     role: role
   });
 
+
   const inputHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setValue({ ...value, [name]: value });
   }
+
+  useEffect(()=>{
+    if(activeAll){
+      setActive(true);
+    }
+    if(active){
+      setDeleteArr(current => [...current, id]);
+    }
+  },[active, activeAll])
 
   const editEmplHandler = (e) =>{
     setDisabled(!disabled);
@@ -31,8 +40,10 @@ function Employee({ name, role, email, id, setEmployees, setDeleteArr, allActive
     );
   }
   const handleCheckbox = ()=>{
+    if(activeAll){
+      setActiveAll(!activeAll);
+    }
     setActive(!active);
-    setDeleteArr(current => [...current, id]);
   }
 
   return (

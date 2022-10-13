@@ -7,9 +7,11 @@ function Homepage() {
 
   const [employees, setEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [emplPerPage, setEmplPerPage] = useState(10);
+  const emplPerPage = 10;
   const [deleteArr, setDeleteArr] = useState([]);
-  const [allActive, setAllActive] = useState(false);
+  const [activeAll, setActiveAll] = useState(false);
+
+  
 
   const getEmployeeData = async () => {
     try {
@@ -28,22 +30,27 @@ function Homepage() {
     );
   }
 
+  
   const lastEmplIndex = currentPage*emplPerPage;
   const firstEmplIndex = lastEmplIndex - emplPerPage;
-  const currentEmpl = employees.slice(firstEmplIndex, lastEmplIndex);
+  const currentEmpl = employees?.slice(firstEmplIndex, lastEmplIndex);
 
   useEffect(() => {
     getEmployeeData();
   }, []);
 
   
+  
   const deleteEmployeesHandler = ()=>{
     setEmployees(current=>
       current.filter((empl)=>{
-        return !deleteArr.includes(empl);
+        return !deleteArr.includes(empl.id);
       })
     );
-    console.log(deleteArr);
+  }
+
+  const handleAllUsersCheckbox=()=>{
+    setActiveAll(!activeAll);
   }
 
 
@@ -55,7 +62,7 @@ function Homepage() {
       <div className="table-div">
         <table>
             <tr className="table-head">
-              <th className="checkbox"><input type="checkbox" onChange={()=>setAllActive(!allActive)} /></th>
+              <th className="checkbox"><input type="checkbox" onChange={handleAllUsersCheckbox} checked={activeAll} /></th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
@@ -66,7 +73,7 @@ function Homepage() {
 
               const { id, name, email, role } = empl;
               return (
-                <Employee allActive={allActive} setDeleteArr={setDeleteArr} key={id} id={id} name={name} email={email} role={role} setEmployees={setEmployees} />
+                <Employee deleteArr={deleteArr} setActiveAll={setActiveAll} employees={employees} activeAll={activeAll} setDeleteArr={setDeleteArr} key={id} id={id} name={name} email={email} role={role} setEmployees={setEmployees} />
               );
             })}
           </tbody>
