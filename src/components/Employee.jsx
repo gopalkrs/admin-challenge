@@ -6,7 +6,7 @@ import { faEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 function Employee({ name, role, email, id, setEmployees, employees, setDeleteArr, activeAll, setActiveAll, deleteArr}) {
 
   const [disabled, setDisabled] = useState("disabled");
-  const [active, setActive] = useState(false);
+  const [rowActive, setRowActive] = useState(activeAll? true : false);
   const [value, setValue] = useState({
     name: name,
     email: email,
@@ -22,13 +22,18 @@ function Employee({ name, role, email, id, setEmployees, employees, setDeleteArr
   }
 
   useEffect(()=>{
-    if(activeAll){
-      setActive(true);
-    }
-    if(active){
+    setRowActive(activeAll? true : false);
+    if(rowActive){
       setDeleteArr(current => [...current, id]);
     }
-  },[active, activeAll])
+    if(!rowActive){
+      setDeleteArr(current => 
+        current.filter(element => {
+          return element!==id;
+        })
+      );
+    }
+  },[rowActive, activeAll])
 
   const editEmplHandler = (e) =>{
     setDisabled(!disabled);
@@ -45,12 +50,12 @@ function Employee({ name, role, email, id, setEmployees, employees, setDeleteArr
     if(activeAll){
       setActiveAll(!activeAll);
     }
-    setActive(!active);
+    setRowActive(!rowActive);
   }
 
   return (
-    <tr className="Employee" style={{backgroundColor: active? 'grey' : ''}}>
-      <td><input type="checkbox" onChange={handleCheckbox} checked={active} /></td>
+    <tr className="Employee" style={{backgroundColor: rowActive? 'grey' : ''}}>
+      <td><input type="checkbox" onChange={handleCheckbox} checked={rowActive} /></td>
       <td>
         <input style={{border: editActive? '1px solid rgba(0,0,0,0.1)' : ''}} disabled={disabled} type="text" name='name' id='name' value={value.name} onChange={inputHandler} />
       </td>
