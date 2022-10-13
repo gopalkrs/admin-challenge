@@ -12,6 +12,7 @@ function Employee({ name, role, email, id, setEmployees, employees, setDeleteArr
     email: email,
     role: role
   });
+  const [editActive, setEditActive] = useState(false);
 
 
   const inputHandler = (e) => {
@@ -31,6 +32,7 @@ function Employee({ name, role, email, id, setEmployees, employees, setDeleteArr
 
   const editEmplHandler = (e) =>{
     setDisabled(!disabled);
+    setEditActive(!editActive);
   }
   const deleteEmplHandler = (e) =>{
     setEmployees(current=>
@@ -50,13 +52,13 @@ function Employee({ name, role, email, id, setEmployees, employees, setDeleteArr
     <tr className="Employee" style={{backgroundColor: active? 'grey' : ''}}>
       <td><input type="checkbox" onChange={handleCheckbox} checked={active} /></td>
       <td>
-        <input disabled={disabled} type="text" name='name' id='name' value={value.name} onChange={inputHandler} />
+        <input style={{border: editActive? '1px solid rgba(0,0,0,0.1)' : ''}} disabled={disabled} type="text" name='name' id='name' value={value.name} onChange={inputHandler} />
       </td>
       <td>
-        <input disabled={disabled} type="text" name='email' id='email' value={value.email} onChange={inputHandler} />
+        <input style={{border: editActive? '1px solid rgba(0,0,0,0.1)' : ''}} disabled={disabled} type="text" name='email' id='email' value={value.email} onChange={inputHandler} />
       </td>
       <td className='role-emplyee'>
-        <input disabled={disabled} type="text" name='role' id='role' value={value.role} onChange={inputHandler} />
+        <input style={{border: editActive? '1px solid rgba(0,0,0,0.1)' : ''}} disabled={disabled} type="text" name='role' id='role' value={value.role} onChange={inputHandler} />
       </td>
       <td className="edit-delete-icons">
         <FontAwesomeIcon className='icons' icon={faEdit} onClick={editEmplHandler} />
